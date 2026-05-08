@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Dash-wood — {{ wood }}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Special+Elite&family=VT323&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #1a1008;
+            background-image:
+                repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0, 0, 0, 0.15) 2px, rgba(0, 0, 0, 0.15) 4px);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Special Elite', cursive;
+            padding: 60px 20px;
+        }
+
+        .film-strip-top,
+        .film-strip-bottom {
+            position: fixed;
+            left: 0;
+            right: 0;
+            height: 48px;
+            background: #0a0600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 0 12px;
+            z-index: 10;
+        }
+
+        .film-strip-top {
+            top: 0;
+        }
+
+        .film-strip-bottom {
+            bottom: 0;
+        }
+
+        .film-hole {
+            width: 28px;
+            height: 28px;
+            border-radius: 4px;
+            background: #1a1008;
+            border: 2px solid #2a1e06;
+            flex-shrink: 0;
+        }
+
+        .game-card {
+            width: 100%;
+            max-width: 680px;
+            border: 1px solid #3a2a08;
+            background: #110d04;
+            padding: 40px;
+            position: relative;
+        }
+
+        .game-card::before {
+            content: '';
+            position: absolute;
+            top: 6px;
+            left: 6px;
+            right: 6px;
+            bottom: 6px;
+            border: 1px solid #2a1e06;
+            pointer-events: none;
+        }
+
+        .wood-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 52px;
+            color: #f5c842;
+            letter-spacing: 8px;
+            text-align: center;
+            text-shadow: 0 0 20px rgba(245, 200, 66, 0.3);
+            margin-bottom: 4px;
+        }
+
+        .section-label {
+            font-family: 'VT323', monospace;
+            font-size: 15px;
+            color: #8a7040;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .divider {
+            border: none;
+            border-top: 1px solid #3a2a08;
+            margin: 24px 0;
+        }
+
+        .lives-section {
+            text-align: center;
+            margin-bottom: 28px;
+        }
+
+        .lives-label {
+            font-family: 'VT323', monospace;
+            font-size: 16px;
+            color: #8a7040;
+            letter-spacing: 4px;
+            margin-bottom: 10px;
+        }
+
+        .lives-display {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 36px;
+            letter-spacing: 6px;
+            color: #e8420a;
+            text-shadow: 0 0 16px rgba(232, 66, 10, 0.5);
+        }
+
+        .board-section {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .board-label {
+            font-family: 'VT323', monospace;
+            font-size: 16px;
+            color: #8a7040;
+            letter-spacing: 4px;
+            margin-bottom: 14px;
+        }
+
+        .board-display {
+            font-family: 'VT323', monospace;
+            font-size: 42px;
+            color: #f5c842;
+            letter-spacing: 8px;
+            text-shadow: 0 0 10px rgba(245, 200, 66, 0.2);
+            word-break: break-all;
+            line-height: 1.4;
+        }
+
+        .message-box {
+            text-align: center;
+            margin-bottom: 24px;
+            padding: 14px;
+            border: 1px solid #3a2a08;
+            background: #0d0902;
+        }
+
+        .message-text {
+            font-family: 'VT323', monospace;
+            font-size: 22px;
+            letter-spacing: 2px;
+            color: #c8860a;
+        }
+
+        .guess-section {
+            text-align: center;
+        }
+
+        .guess-form {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .guess-input {
+            width: 80px;
+            height: 64px;
+            background: #0d0902;
+            border: 2px solid #c8860a;
+            color: #f5c842;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 36px;
+            text-align: center;
+            letter-spacing: 4px;
+            outline: none;
+            text-transform: uppercase;
+        }
+
+        .guess-input:focus {
+            border-color: #f5c842;
+            box-shadow: 0 0 20px rgba(245, 200, 66, 0.4);
+        }
+
+        .guess-btn {
+            padding: 16px 40px;
+            background: transparent;
+            border: 2px solid #c8860a;
+            color: #f5c842;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 24px;
+            letter-spacing: 4px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            clip-path: polygon(10px 0%, 100% 0%, calc(100% - 10px) 100%, 0% 100%);
+        }
+
+        .guess-btn:hover {
+            background: #f5c842;
+            color: #1a1008;
+            box-shadow: 0 0 30px rgba(245, 200, 66, 0.6), 0 0 60px rgba(245, 200, 66, 0.2);
+        }
+
+        .home-link {
+            display: block;
+            text-align: center;
+            margin-top: 28px;
+            font-family: 'VT323', monospace;
+            font-size: 18px;
+            color: #8a7040;
+            letter-spacing: 3px;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .home-link:hover {
+            color: #c8860a;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="film-strip-top">
+        {% for i in range(20) %}<div class="film-hole"></div>{% endfor %}
+    </div>
+
+    <div class="game-card">
+
+        <div class="wood-title">{{ wood }}</div>
+        <div class="section-label">&#9654; Guess the movie &#9654;</div>
+
+        <hr class="divider">
+
+        <div class="lives-section">
+            <div class="lives-label">&#9673; Lives Remaining &#9673;</div>
+            <div class="lives-display">{{ lives | join("") }}</div>
+        </div>
+
+        <hr class="divider">
+
+        <div class="board-section">
+            <div class="board-label">&#9673; The Movie &#9673;</div>
+            <div class="board-display">{{ board | join("") }}</div>
+        </div>
+
+        {% if message %}
+        <div class="message-box">
+            <div class="message-text">&#9656; {{ message }} &#9666;</div>
+        </div>
+        {% endif %}
+
+        <hr class="divider">
+
+        <div class="guess-section">
+            <form action="/guess" method="POST" class="guess-form">
+                <input class="guess-input" type="text" name="guess" maxlength="1" placeholder="?" autocomplete="off"
+                    autofocus>
+                <button class="guess-btn" type="submit">Guess</button>
+            </form>
+        </div>
+
+        <a href="/" class="home-link">&#8592; Back to -Wood Selection</a>
+
+    </div>
+
+    <div class="film-strip-bottom">
+        {% for i in range(20) %}<div class="film-hole"></div>{% endfor %}
+    </div>
+
+</body>
+
+</html>
